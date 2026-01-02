@@ -1,0 +1,25 @@
+{
+  "name": "word-unscrambler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knyfie-P/Word-Unscrambler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/knyfie-P/Word-Unscrambler/issues"
+  },
+  "homepage": "https://github.com/knyfie-P/Word-Unscrambler#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
+  }
+}

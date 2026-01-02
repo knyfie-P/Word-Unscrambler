@@ -6,36 +6,33 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <title>Simple Website</title>
+    <title>Word Unscrambler</title>
 </head>
 <body>
-    <h1 class="title">Word Unscrambler</h1>
-    <!-- Button for toggling btw light and dark mode-->
-    <div class="header">
-        <img src="logo.png" alt="Logo">
-        <button id="btn" class="theme-toggle"> <i class="fa-solid fa-moon"></i></button>
-    </div>
-    <!-- search bar-->
-    <div class="search-container">
-        <input type="text" placeholder="Type word" id="searchInput">
-        <button id="searchBtn" onclick="search()" class="fas fa-search"></button>
-    </div>
-    <div id="foot" class="footer">
-        <!-- Biz desc -->
-        <p id="ft">Simple Descriptions</p>
-        <!-- Socials and Contacts -->
-        <a href="#" id="fa" class="fa-brands fa-instagram fa-beat"></a>
-        <a href="#" id="fa" class="fa-brands fa-twitter fa-beat"></a>
-        <a href="#" id="fa" class="fa-brands fa-whatsapp fa-beat"></a>
-        <a href="#" id="fa" class="fa-solid fa-envelope fa-beat"></a>
-        <!-- Add copyright information -->
+
+    <div class="main-container">
+        <!-- Theme Toggle -->
+        <button id="btn" class="theme-toggle">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <h1 class="title">Unscramble</h1>
         
-        <p>
-            yoimo
-        </p>
-     </div>
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" placeholder="Enter scrambled letters..." id="searchInput" autocomplete="off">
+            <button id="searchBtn" class="fas fa-search"></button>
+        </div>
+        
+        <!-- Results -->
+        <div id="results"></div>
+        
+        <!-- Minimal Footer -->
+        <div class="footer-simple">
+            <p>Word Unscrambler</p>
+        </div>
+    </div>
+
+<script src="script.js"></script>
 </body>
 </html>
-<script src="script.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

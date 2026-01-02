@@ -1,101 +1,84 @@
-    //changes the background image to either dark or light
-    let darkMode = false;
-    document.getElementById("btn").addEventListener("click", function() {
-        var text = this.innerHTML;
-        darkMode = !darkMode;
-        if (darkMode) {
-            document.body.style.backgroundImage = "url('B2.png')";
-            document.body.style.color = "#F2F3F5";
-            currentIcon.classList.remove('fa-moon');
-            currentIcon.classList.add('fa-sun');
-        } else {
-            document.body.style.backgroundImage = "url('B1.png')";
-            document.body.style.color = "#1E3050";
-            currentIcon.classList.remove('fa-sun');
-            currentIcon.classList.add('fa-moon');
-        }
-        
-    });
-
-
-    //changes the button text color to either dark or light
-       document.getElementById("btn").addEventListener("click", function() {
-        var button = document.getElementById("btn");
-        if (button.style.color === "rgb(30, 48, 80)") {
-           button.style.color = "#F2F3F5";
-        } else {
-           button.style.color = "#1E3050";
-        }
-       });
-
-
-    //changes the search bar color to either dark or light
-       document.getElementById("btn").addEventListener("click", function() {
-        var input = document.getElementById("searchInput");
-        if (searchInput.style.backgroundColor === "rgb(242, 243, 245)") {
-            searchInput.style.backgroundColor = "#1E3050";
-        } else {
-            searchInput.style.backgroundColor = "#F2F3F5";
-        }
-    });
-
-
-    //changes the search btn color to either dark or light
-    document.getElementById("btn").addEventListener("click", function() {
-        var input = document.getElementById("searchBtn");
-        if (searchBtn.style.backgroundColor === "rgb(242, 243, 245)") {
-            searchBtn.style.backgroundColor = "#1E3050";
-        } else {
-            searchBtn.style.backgroundColor = "#F2F3F5";
-        }
-    });
-
-
-    //changes the search btn text color to either dark or light
-    document.getElementById("btn").addEventListener("click", function() {
-        var input = document.getElementById("searchBtn");
-        if (searchBtn.style.color === "rgb(30, 48, 80)") {
-            searchBtn.style.color = "#F2F3F5";
-        } else {
-            searchBtn.style.color = "#1E3050";
-        }
-       });
-
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById("btn");
+    const icon = btn.querySelector("i");
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
     
-    //changes the footer color to either light or dark
-       document.getElementById("btn").addEventListener("click", function() {
-        var input = document.getElementById("foot");
-        if (foot.style.backgroundColor === "rgb(242, 243, 245)") {
-            foot.style.backgroundColor = "#1E3050";
+    // Search Event Listeners
+    searchBtn.addEventListener('click', search);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') search();
+    });
+
+    // Theme Toggle Logic
+    let darkMode = localStorage.getItem('theme') === 'dark';
+    
+    // Apply initial theme
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+
+    btn.addEventListener("click", () => {
+        darkMode = !darkMode;
+        document.body.classList.toggle('dark-mode');
+        
+        if (darkMode) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'dark');
         } else {
-            foot.style.backgroundColor = "#F2F3F5";
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'light');
         }
-       });
-
-
-    //changes the footer text color to either light or dark
-       document.getElementById("btn").addEventListener("click", function() {
-        var fa = document.getElementById("fa");
-        var links = document.querySelectorAll("a");
-        var color = (fa.style.color === "rgb(30, 48, 80)") ? "#F2F3F5" : "#1E3050";
-        
-        fa.style.color = color;
-        
-        links.forEach(function(link) {
-            link.style.color = color;
-        });
     });
-       
+});
 
-    //changes the footer Link color to either light or dark
-    document.getElementById("btn").addEventListener("click", function() {
-        var ft = document.getElementById("ft");
-        var links = document.querySelectorAll("p");
-        var color = (ft.style.color === "rgb(30, 48, 80)") ? "#F2F3F5" : "#1E3050";
+async function search() {
+    const input = document.getElementById('searchInput').value.trim();
+    if (!input) return;
+
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = '<div class="text-center p-3">Searching...</div>';
+
+    try {
+        const response = await fetch(`http://localhost:3000/unscramble/${input}`);
+        if (!response.ok) throw new Error('Server error');
         
-        ft.style.color = color;
+        const words = await response.json();
         
-        links.forEach(function(link) {
-            link.style.color = color;
+        resultsContainer.innerHTML = '';
+        if (words.length === 0) {
+            resultsContainer.innerHTML = '<div class="text-center p-3">No matches found.</div>';
+            return;
+        }
+
+        const list = document.createElement('div');
+        list.className = 'list-group list-group-flush';
+        
+        const displayWords = words.slice(0, 100); 
+        
+        displayWords.forEach(word => {
+            const item = document.createElement('div');
+            item.className = 'list-group-item';
+            item.textContent = word;
+            list.appendChild(item);
         });
-    });
+
+        if (words.length > 100) {
+            const more = document.createElement('div');
+            more.className = 'list-group-item text-muted';
+            more.style.fontStyle = 'italic';
+            more.textContent = `...and ${words.length - 100} more.`;
+            list.appendChild(more);
+        }
+
+        resultsContainer.appendChild(list);
+
+    } catch (error) {
+        console.error('Error:', error);
+        resultsContainer.innerHTML = '<div class="text-center p-3 text-danger">Server offline. Run: node server.js</div>';
+    }
+}
